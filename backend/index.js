@@ -15,14 +15,41 @@ const pool = new Pool({
     port: 5432
 })
 
+function verifyUser(req) {
+    const authHeader = req.headers.authorization
+    const token = authHeader?.split(' ')[1]
+    if (!token) {
+        throw new Error('Token is empty')
+    }
+    return jwt.verify(token, process.env.JWT_SECRET)
+}
+
+function oauthMiddleware() {
+    
+}
+
 
 const app = express()
 app.use(express.json())
 app.use(cors())
 
+
 app.post('/create', async (req, res) => {
-    const {name, description, category, quantity, price, sku} = req.body
+    const oauthHeader = req.headers.authorization
+    const token = oauthHeader && authHeader.split(' ')[1]
+
+    if (!token) {
+        throw new Error('Нет токена')
+    }
+
+    
      try {
+        const user = jwt.verify(token, process.env.JWT_SECRET) 
+        if (user.role !== 'seller') {
+            return res.status(403).json({message: 'Ошибка прав'})
+        }
+
+        const {name, description, category, quantity, price, sku} = req.body
         const result = await pool.query('INSERT INTO products (name, price, description, sku, category_id, stock_quantity) VALUES ($1, $2, $3, $4, $5, $6)', 
         [name, price, description, sku, category, quantity])
         res.status(201).json({success: true, message: 'Товар добавлен', result: result.rows[0]})

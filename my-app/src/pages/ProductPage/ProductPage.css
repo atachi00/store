@@ -1,0 +1,173 @@
+.product-page {
+  min-height: 1200px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+  padding-left: 80px;
+  padding-right: 80px;
+  background: #0A0A0C;
+  font-family: 'Geist', sans-serif;
+}
+
+.breadcrumbs {
+  display: flex;
+  align-self: stretch;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: row;
+  gap: 8px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.breadcrumb-item {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: row;
+  gap: 8px;
+}
+
+.breadcrumb-text {
+  color: #8E8E93;
+  font-size: 14px;
+}
+
+.product-main {
+  display: flex;
+  align-self: stretch;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: row;
+  gap: 40px;
+  padding-bottom: 48px;
+}
+
+.product-gallery {
+  width: 580px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.product-main-image {
+  width: 580px;
+  height: 460px;
+  align-self: stretch;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.product-thumbs {
+  display: flex;
+  align-self: stretch;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: row;
+  gap: 16px;
+}
+
+.product-thumb {
+  display: block;
+}
+
+.product-info {
+  display: flex;
+  flex: 1 1 0%;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.product-title-block {
+  display: flex;
+  align-self: stretch;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.product-title {
+  color: #FFFFFF;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.product-rating-row {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: row;
+  gap: 12px;
+}
+
+.stars {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: row;
+  gap: 8px;
+}
+
+.star-icon {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.rating-value {
+  color: #FFFFFF;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.reviews-count {
+  color: #8E8E93;
+  font-size: 14px;
+}
+
+.price-row {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: row;
+  gap: 12px;
+}
+
+.price-current {
+  color: #FFFFFF;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.price-old {
+  color: #8E8E93;
+  font-size: 18px;
+  text-decoration: line-through;
+}
+
+.discount-badge {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4px 12px;
+  background-color: #5D0018;
+  border-radius: 4px;
+}
+
+.discount-text {
+  color: #FFFFFF;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.product-description {
+  color: #D2D2D7;
+  font-size: 16px;
+  line-height: 1.6;
+}

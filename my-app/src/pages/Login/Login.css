@@ -32,7 +32,6 @@
     margin-bottom: 10px;
     font-size: 20px;
     padding-left: 4px;
-    
 }
 
 .inp-raw::placeholder{
@@ -45,10 +44,14 @@
     font-size: 20px;
     background-color: var(--accent);
     border-radius: 4px;
+    cursor: pointer;
+    border: none;
 }
 
 .redirect-link{
-
+    margin-top: 10px;
+    color: var(--accent);
+    text-decoration: none;
 }
 
 .error-msg{
@@ -61,8 +64,7 @@
 @keyframes fadeIN {
     from {
         opacity: 0;
-        }
-
+    }
     to {
         opacity: 1;        
     }

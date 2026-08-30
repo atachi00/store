@@ -19,7 +19,7 @@ export default function Header() {
             <div className="main-btns">
                 <button className="nav-btn" onClick={() => navigate('/create')}>Создать товар</button>
                 <button className="nav-btn" onClick={() => navigate('/seller')}>Мои товары</button>
-                <button className="logout-btn" onClick={() => navigate('/login')}>Выход</button>
+                <button className="logout-btn" onClick={() => navigate('/')}>Выход</button>
             </div>
         </div>
     )

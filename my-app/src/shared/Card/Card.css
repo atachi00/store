@@ -46,7 +46,6 @@ body {
   flex: 1;
 }
 
-
 /*maxlength:80: input seller*/
 .title {
   min-height:36px;
@@ -81,5 +80,4 @@ body {
   font-family: var(--sans);
   font-size: 14px;
   text-align: center;
-
 }

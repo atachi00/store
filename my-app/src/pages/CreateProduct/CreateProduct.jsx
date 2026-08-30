@@ -1,6 +1,6 @@
 import './CreateProduct.css'
 import {useState} from 'react'
-import api from './api/_axios'
+import api from '../../api/_axios'
 import {useNavigate} from 'react-router-dom'
 
 function CreateProduct() {
@@ -49,7 +49,7 @@ function CreateProduct() {
 
           <div className="form-field">
             <div className="field-label-row">
-              <span className="field-label">Название товара</span> {/*current */}
+              <span className="field-label">Название товара</span>
               <span className="field-required">*</span>
             </div>
             <input 
@@ -144,7 +144,6 @@ function CreateProduct() {
           </div>
         </div>
 
-
         <div className="form-section">
           <p className="section-title">Медиафайлы</p>
           <div className="section-divider" />
@@ -168,17 +167,12 @@ function CreateProduct() {
 
         <div className="section-divider" />
 
-
         <div className="form-actions">
           <div className="btn-cancel">
-            <button
-            onClick={() => navigate('/seller')}
-            >Отменить</button>
+            <button onClick={() => navigate('/seller')}>Отменить</button>
           </div>
           <div className="btn-submit">
-            <button
-            onClick={() => {handleClick()}}
-            >Сохранить товар</button>
+            <button onClick={() => {handleClick()}}>Сохранить товар</button>
           </div>
         </div>
       </div>
