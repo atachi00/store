@@ -30,6 +30,7 @@
 }
 
 .logo-text {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 20px;
     font-weight: 700;
     color: var(--gold, #D29F22);

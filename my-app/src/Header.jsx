@@ -7,7 +7,7 @@ export default function Header() {
     return(
         <div className="head-cont">
             <div className="logo-cont" onClick={() => navigate('/')}>
-                <span className="logo-text">MarketPlace</span>
+                <span className="logo-text">LOGO</span>
             </div>
             <div className="search-cont">
                 <input 

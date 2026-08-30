@@ -84,13 +84,19 @@ function CreateProduct() {
                 <span className="field-label">Категория</span>
                 <span className="field-required">*</span>
               </div>
-              <input 
+              <select 
                 className="input-box"
-                type="text"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                placeholder="Выберите категорию товара"
-              />
+              >
+                <option value="">Выберите категорию</option>
+                <option value="1">Электроника</option>
+                <option value="2">Одежда</option>
+                <option value="3">Дом и сад</option>
+                <option value="4">Красота и здоровье</option>
+                <option value="5">Спорт и отдых</option>
+                <option value="6">Аудио</option>
+              </select>
             </div>
 
             <div className="form-field form-field-flex">
