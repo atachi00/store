@@ -1,0 +1,23 @@
+import { Routes, Route } from 'react-router-dom'
+import Login from './Login'
+import SellerPage from './SellerPage'
+import Register from './Register'
+import Dashboard from './Dashboard'
+import ProductPage from './ProductPage'
+
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/seller" element={<SellerPage />} />
+      <Route path="/" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/products/:id" element={<ProductPage/>}/>
+
+
+    </Routes>
+  )
+}
+
+export default App

@@ -1,0 +1,42 @@
+.head-cont {
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    position: fixed;
+    display: flex;
+    padding-left: 10px;
+    padding-right: 10px;
+    justify-content: flex start;
+    background-color: black;
+}
+
+.logo-cont{ 
+    width: 70%;
+    position: relative;
+    right: 10px;
+    height: 100%;
+    display: inline-block;
+    background-color: blue;
+}
+
+.search-cont{
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    background-color: red;
+}
+
+.main-btns{
+    width: 50%;
+    height: 100%;
+    display: inline-block;
+    background-color: orangered;
+}
+
+.oauth{
+    width: 20%;
+    background-color: cyan;
+    height: 100%;
+    display: inline-block;
+}

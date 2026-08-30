@@ -1,0 +1,22 @@
+*,*::after, *::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 12px;
+  background-color: #252628;
+}
+
+:root {
+  --vine: #5D0018;
+  --carbon: #252628;
+  --white: #F3F3F3;
+  --gold: #D29F22;
+  --coal: #19171B;
+
+
+}
