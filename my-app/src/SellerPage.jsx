@@ -60,7 +60,7 @@ return (
     placeholder="Product name"
     onInput={(e) => setText({...text, name: e.target.value})}
     />
-      <input
+      {/* <input
       placeholder="Price"
       className="card-inp"
     value={text.price}
@@ -71,21 +71,10 @@ return (
       className="card-inp"
     value={text.description}
     onInput={(e) => setText({...text, description: e.target.value})}
-    />
+    /> */}
       <button
       className="card-btn"
-    onClick={() => {
-      fetch('http://localhost:3000/products', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(text)
-      })
-      .then(res => res.json())
-      .then(newProduct => setProducts([...products, newProduct]))
-      setText({ name: '', price: '', description: '' })
-    }}
+    onClick={() => handleClick()}
     >Add</button>
     </div>
     </div>

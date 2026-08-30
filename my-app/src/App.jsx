@@ -4,6 +4,7 @@ import SellerPage from './SellerPage'
 import Register from './Register'
 import Dashboard from './Dashboard'
 import ProductPage from './ProductPage'
+import CreateProduct from './CreateProduct'
 
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
       <Route path="/register" element={<Register />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/products/:id" element={<ProductPage/>}/>
+      <Route path="/create" element={<CreateProduct/>}/>
 
 
     </Routes>
