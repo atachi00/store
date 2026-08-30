@@ -1,9 +1,9 @@
--- Создаём таблицу продуктов
 CREATE TABLE IF NOT EXISTS products (
   id SERIAL PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
   price DECIMAL(10,2) DEFAULT 0,
   description TEXT,
+  sku VARCHAR(12) NOT NULL,
   image_url VARCHAR(500),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

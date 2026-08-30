@@ -26,7 +26,7 @@ function CreateProduct() {
 
           <div className="form-field">
             <div className="field-label-row">
-              <span className="field-label">Название товара</span>
+              <span className="field-label">Название товара</span> {/*current */}
               <span className="field-required">*</span>
             </div>
             <div className="field-box">

@@ -19,9 +19,8 @@ async function runMigrations() {
 
   try {
     await client.connect();
-    console.log('✅ Connected to database');
+    console.log('Connected to database');
 
-    // Создаём таблицу для отслеживания миграций
     await client.query(`
       CREATE TABLE IF NOT EXISTS migrations (
         id SERIAL PRIMARY KEY,
@@ -30,17 +29,17 @@ async function runMigrations() {
       );
     `);
 
-    // Получаем выполненные миграции
+  
     const result = await client.query('SELECT name FROM migrations ORDER BY id');
     const executedMigrations = result.rows.map(row => row.name);
 
-    // Читаем файлы миграций
+
     const migrationsDir = path.join(__dirname, 'migrations');
     const files = fs.readdirSync(migrationsDir)
       .filter(file => file.endsWith('.sql'))
       .sort();
 
-    // Выполняем новые
+
     for (const file of files) {
       if (!executedMigrations.includes(file)) {
         console.log(`🔄 Running migration: ${file}`);
@@ -53,16 +52,16 @@ async function runMigrations() {
           [file]
         );
         
-        console.log(`✅ Migration ${file} completed`);
+        console.log(` Migration ${file} completed`);
       } else {
-        console.log(`⏭️ Skipping ${file} (already executed)`);
+        console.log(` Skipping ${file} (already executed)`);
       }
     }
 
-    console.log('🎉 All migrations completed!');
+    console.log(' All migrations completed!');
 
   } catch (error) {
-    console.error('❌ Migration failed:', error);
+    console.error(' Migration failed:', error);
     process.exit(1);
   } finally {
     await client.end();
