@@ -24,8 +24,8 @@ body {
   padding-right: 5px;
   border-radius: 10px;
   color: var(--white);
-  width: 170px;
-  height: 271px;
+  width: 210px;
+  height: 310px;
   background-color: var(--coal);
   display: flex;
   flex-direction: column;

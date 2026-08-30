@@ -11,7 +11,7 @@ return(
         <div className="img"></div>
             <div className="card-info">
             <span className="title">{product.name}</span>
-            <span className="price">{product.price}</span>
+            <span className="price">{product.price}$</span>
             <span className="button">{product.description}</span>
         </div>
     </div>

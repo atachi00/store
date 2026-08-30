@@ -20,6 +20,19 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
+app.post('/create', async (req, res) => {
+    const {name, description, category, quantity, price, sku} = req.body
+     try {
+        const result = await pool.query('INSERT INTO products (name, price, description, sku, category_id, stock_quantity) VALUES ($1, $2, $3, $4, $5, $6)', 
+        [name, price, description, sku, category, quantity])
+        res.status(201).json({success: true, message: 'Товар добавлен', result: result.rows[0]})
+    } catch (error) {
+        res.status(400).json({success: false, message: 'Не удалось добавить товар'})
+        throw error
+    }
+
+   
+})
 
 app.get('/products', async (req,res) => {
     const result = await pool.query('SELECT * FROM products') //рендер карточек продуктов

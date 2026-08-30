@@ -1,6 +1,29 @@
 import './CreateProduct.css'
+import {useState} from 'react'
+import api from './api/_axios'
+import {useNavigate} from 'react-router-dom'
 
 function CreateProduct() {
+  const [name, setName] = useState('')
+  const [description, setDescription] = useState('')
+  const [category, setCategory] = useState('')
+  const [quantity, setQuantity] = useState('')
+  const [price, setPrice] = useState('')
+  const [sku, setSku] = useState('')
+  const navigate = useNavigate()
+  
+
+  const handleClick = async () => {
+  return  await api.post('/create', {
+      name,
+      description,
+      category,
+      quantity,
+      price,
+      sku
+    })
+    .then(() => navigate('/seller'))
+  }
   return (
     <div className="create-product-page">
       <div className="page-header">
@@ -29,20 +52,24 @@ function CreateProduct() {
               <span className="field-label">Название товара</span> {/*current */}
               <span className="field-required">*</span>
             </div>
-            <div className="field-box">
-              <p className="field-placeholder">
-                Введите точное название товара, например: Смартфон X-Pro 128ГБ
-              </p>
-            </div>
+            <input 
+              className="input-box"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Название товара"
+            /> 
           </div>
 
           <div className="form-field">
             <div className="field-label-row">
               <span className="field-label">Описание товара</span>
             </div>
-            <div className="field-box field-box-textarea">
-              <p className="field-placeholder">Добавьте детальное описание вашего продукта...</p>
-            </div>
+            <textarea 
+              className="input-box field-box-textarea"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Подробные характеристики, преимущества и комплектация"
+            />
             <p className="field-hint">Подробные характеристики, преимущества и комплектация</p>
           </div>
         </div>
@@ -57,12 +84,13 @@ function CreateProduct() {
                 <span className="field-label">Категория</span>
                 <span className="field-required">*</span>
               </div>
-              <div className="field-box field-box-between">
-                <p className="field-placeholder">Выберите категорию товара</p>
-                <div className="field-icon-wrapper">
-                  <img src="https://picsum.photos/id/18/18" alt="chevron-down" className="field-icon" />
-                </div>
-              </div>
+              <input 
+                className="input-box"
+                type="text"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                placeholder="Выберите категорию товара"
+              />
             </div>
 
             <div className="form-field form-field-flex">
@@ -70,10 +98,13 @@ function CreateProduct() {
                 <span className="field-label">Количество на складе</span>
                 <span className="field-required">*</span>
               </div>
-              <div className="field-box field-box-between">
-                <p className="field-placeholder">0</p>
-                <span className="field-suffix">шт.</span>
-              </div>
+              <input 
+                className="input-box"
+                type="number"
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+                placeholder="0"
+              />
             </div>
           </div>
 
@@ -83,19 +114,26 @@ function CreateProduct() {
                 <span className="field-label">Цена продажи</span>
                 <span className="field-required">*</span>
               </div>
-              <div className="field-box field-box-between">
-                <p className="field-placeholder">0.00</p>
-                <span className="field-suffix field-suffix-bold">₽</span>
-              </div>
+              <input 
+                className="input-box"
+                type="number"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                placeholder="0.00"
+              />
             </div>
 
             <div className="form-field form-field-flex">
               <div className="field-label-row">
                 <span className="field-label">Артикул / SKU</span>
               </div>
-              <div className="field-box">
-                <p className="field-placeholder">Например: ART-904812</p>
-              </div>
+              <input 
+                className="input-box"
+                type="text"
+                value={sku}
+                onChange={(e) => setSku(e.target.value)}
+                placeholder="Например: ART-904812"
+              />
             </div>
           </div>
         </div>
@@ -127,10 +165,14 @@ function CreateProduct() {
 
         <div className="form-actions">
           <div className="btn-cancel">
-            <span>Отменить</span>
+            <button
+            onClick={() => navigate('/seller')}
+            >Отменить</button>
           </div>
           <div className="btn-submit">
-            <span>Сохранить товар</span>
+            <button
+            onClick={() => {handleClick()}}
+            >Сохранить товар</button>
           </div>
         </div>
       </div>
