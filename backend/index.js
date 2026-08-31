@@ -36,7 +36,7 @@ app.use(cors())
 
 app.post('/create', async (req, res) => {
     const oauthHeader = req.headers.authorization
-    const token = oauthHeader && authHeader.split(' ')[1]
+    const token = oauthHeader && oauthHeader.split(' ')[1]
 
     if (!token) {
         return res.status(400).json({message: 'Bad Request'})
