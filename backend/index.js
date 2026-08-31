@@ -39,7 +39,7 @@ app.post('/create', async (req, res) => {
     const token = oauthHeader && authHeader.split(' ')[1]
 
     if (!token) {
-        throw new Error('Нет токена')
+        return res.status(400).json({message: 'Bad Request'})
     }
 
     
@@ -66,7 +66,7 @@ app.get('/products', async (req,res) => {
     res.json(result.rows)
 })
 
-app.post('/register', async (req, res) => {          //попытка зарегестрироваться
+    app.post('/register', async (req, res) => {          //попытка зарегистрироваться
     const {email, password, role} = req.body
 
     if (!email || !password || !role) {              // если не заполнены поля

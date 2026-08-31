@@ -1,4 +1,8 @@
+import { useNavigate } from 'react-router-dom'
+
 function NotFoundPage() {
+  const navigate = useNavigate()
+
   return (
     <div style={{
       minHeight: '100vh',
@@ -6,7 +10,6 @@ function NotFoundPage() {
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
-      background: '#19171B',
       color: '#F3F3F3',
       fontFamily: 'sans-serif',
       textAlign: 'center',
@@ -16,6 +19,22 @@ function NotFoundPage() {
       <p style={{ margin: 0, maxWidth: '520px', lineHeight: 1.5 }}>
         Страница не найдена.
       </p>
+
+      <button
+        onClick={() => navigate('/')}
+        style={{
+          marginTop: '20px',
+          padding: '12px 20px',
+          background: '#D29F22',
+          color: '#19171B',
+          border: 'none',
+          borderRadius: '10px',
+          fontWeight: 700,
+          cursor: 'pointer'
+        }}
+      >
+        LOGO
+      </button>
     </div>
   )
 }

@@ -8,26 +8,47 @@ import {getProducts, deleteProducts} from '../../api/sellerPage'
 function SellerPage() {
   const [products, setProducts] = useState([])
   const navigate = useNavigate()
-
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
   useEffect(() => {
     if (!localStorage.getItem('token')) {
       navigate('/')
     }
   }, [])
 
-  useEffect(() => {
-    const interval = setInterval( async () => {
-      try {
-        const data = await getProducts()
-        console.log(data)
+useEffect(() => {
+  let isMounted = true
+  
+  const fetchProduct = async () => {
+    try {
+      setLoading(true)
+      setError(null)
+      const data = await getProducts()
+      
+      if (isMounted) {
         setProducts(data)
-      } catch (error) {
-        console.error('Ошибка ' , error)
+        console.log('Product loaded:', data)
       }
-    }, 3000)
-    return () => clearInterval(interval)
-  }, [])
+    } catch (error) {
+      if (isMounted) {
+        setError(error.message)
+        console.log('Error:', error)
+      }
+    } finally {
+      if (isMounted) {
+        setLoading(false)
+      }
+    }
+  }
 
+  fetchProduct()
+
+  return () => {
+    isMounted = false
+  }
+}, [])
+    if (loading) return <div>Загрузка...</div>
+    if (error) return <div>Ошибка: {error}</div>
   return (
     <>
       <Header/> 

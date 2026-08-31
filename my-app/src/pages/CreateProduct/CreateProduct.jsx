@@ -10,38 +10,79 @@ function CreateProduct() {
   const [quantity, setQuantity] = useState('')
   const [price, setPrice] = useState('')
   const [sku, setSku] = useState('')
+  const [error, setError] = useState('')
   const navigate = useNavigate()
-  
 
   const handleClick = async () => {
-  return  await api.post('/create', {
-      name,
-      description,
-      category,
-      quantity,
-      price,
-      sku
-    })
-    .then(() => navigate('/seller'))
+    if (!name.trim()) {
+      setError('Название товара обязательно')
+      return
+    }
+
+    if (name.trim().length < 10) {
+      setError('Название товара должно быть не меньше 10 символов')
+      return
+    }
+
+    if (!description.trim()) {
+      setError('Описание товара обязательно')
+      return
+    }
+
+    if (!category) {
+      setError('Выберите категорию')
+      return
+    }
+
+    if (!quantity || Number(quantity) <= 0) {
+      setError('Количество на складе должно быть больше 0')
+      return
+    }
+
+    if (!price || Number(price) <= 0) {
+      setError('Цена должна быть больше 0')
+      return
+    }
+
+    if (!sku.trim()) {
+      setError('Артикул обязателен')
+      return
+    }
+
+    try {
+      await api.post('/create', {
+        name,
+        description,
+        category,
+        quantity,
+        price,
+        sku
+      }, {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      })
+
+      navigate('/seller')
+    } catch (err) {
+      setError('Не удалось создать товар. Проверьте данные.')
+      if (err.status === 500) {
+        navigate('/forbidden')
+      }
+    }
   }
+
   return (
     <div className="create-product-page">
       <div className="page-header">
-        <div className="breadcrumbs">
-          <span className="breadcrumb-text">Каталог</span>
-          <div className="breadcrumb-icon-wrapper">
-            <img src="https://picsum.photos/id/14/14" alt="chevron-right" className="breadcrumb-icon" />
-          </div>
-          <span className="breadcrumb-text">Товары</span>
-          <div className="breadcrumb-icon-wrapper">
-            <img src="https://picsum.photos/id/14/14" alt="chevron-right" className="breadcrumb-icon" />
-          </div>
-          <span className="breadcrumb-current">Создание товара</span>
-        </div>
         <p className="page-title">Создание товара</p>
       </div>
 
       <div className="form-card">
+
+        {error && (
+          <div className="validation-error">
+            {error}
+          </div>
+        )}
 
         <div className="form-section">
           <p className="section-title">Основная информация</p>
@@ -53,10 +94,13 @@ function CreateProduct() {
               <span className="field-required">*</span>
             </div>
             <input 
+              maxLength="80"
               className="input-box"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Название товара"
+              type="text"
+              required
             /> 
           </div>
 
@@ -121,6 +165,7 @@ function CreateProduct() {
                 <span className="field-required">*</span>
               </div>
               <input 
+                
                 className="input-box"
                 type="number"
                 value={price}

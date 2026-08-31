@@ -18,6 +18,18 @@
   gap: 8px;
 }
 
+.validation-error {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: rgba(255, 107, 107, 0.12);
+  border: 1px solid #ff6b6b;
+  color: #ffb4b4;
+  font-size: 14px;
+  font-weight: 600;
+}
+
 .breadcrumbs {
   display: flex;
   justify-content: flex-start;
@@ -165,6 +177,17 @@ select.input-box {
   transition: all 0.3s ease;
 }
 
+.input-box[type="number"]::-webkit-outer-spin-button,
+.input-box[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input-box[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
 select.input-box {
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23D29F22' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
@@ -303,31 +326,51 @@ select.input-box {
   width: 100%;
 }
 
-.btn-cancel {
-  display: flex;
+.btn-cancel,
+.btn-submit {
+  display: inline-flex;
   justify-content: center;
   align-items: center;
-  flex-direction: row;
-  padding: 12px 24px;
-  background: #26262B;
-  border: 1px solid #D29F22;
-  border-radius: 8px;
-  color: #8E8E93;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
-.btn-submit {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-  padding: 12px 32px;
-  background: #FFB800;
-  border-radius: 8px;
-  color: #26262B;
+.btn-cancel button,
+.btn-submit button {
+  border: none;
+  border-radius: 10px;
+  padding: 12px 24px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  font-family: inherit;
+}
+
+.btn-cancel button {
+  background: #26262B;
+  border: 1px solid #D29F22;
+  color: #F3F3F3;
+}
+
+.btn-submit button {
+  background: linear-gradient(135deg, #D29F22 0%, #FFB800 100%);
+  color: #19171B;
+  box-shadow: 0 6px 16px rgba(210, 159, 34, 0.28);
+}
+
+.btn-cancel button:hover,
+.btn-submit button:hover {
+  transform: translateY(-1px);
+}
+
+.btn-cancel button:active,
+.btn-submit button:active {
+  transform: translateY(0);
+}
+
+.btn-cancel button:focus,
+.btn-submit button:focus {
+  outline: 2px solid rgba(210, 159, 34, 0.6);
+  outline-offset: 2px;
 }
