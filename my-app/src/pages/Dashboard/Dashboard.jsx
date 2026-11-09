@@ -1,41 +1,43 @@
 import { useEffect, useState } from 'react'
-import {useNavigate} from 'react-router-dom'
 import './Dashboard.css'
 import Card from '../../shared/Card/Card'
 import Header from '../../shared/Header/Header'
-import {getProducts} from '../../api/sellerPage'
+import { getProducts } from '../../api/sellerPage'
+import { getErrorMessage } from '../../utils/getErrorMessage'
 
 function Dashboard() {
   const [products, setProducts] = useState([])
-  const navigate = useNavigate()
-
-  useEffect(()=> {
-    if (!localStorage.getItem('token')) {
-      navigate('/')
-    }
-  })
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
-    const interval = setInterval( async () => {
+    let isMounted = true
+
+    const fetchProducts = async () => {
       try {
         const data = await getProducts()
-        console.log(data)
-        setProducts(data)
-      } catch (error) {
-        console.error('Ошибка ' , error)
+        if (isMounted) setProducts(data)
+      } catch (err) {
+        if (isMounted) setError(getErrorMessage(err, 'Не удалось загрузить товары'))
+      } finally {
+        if (isMounted) setLoading(false)
       }
-    }, 3000)
-    return () => clearInterval(interval)
+    }
+
+    fetchProducts()
+    return () => { isMounted = false }
   }, [])
 
-  return(
+  return (
     <>
-      <Header/>
-      <div className='dash-cont'>
-        {products.map(item => (
-          <Card key={item.id} product={item}/>
-        ))
-        }
+      <Header />
+      {loading && <div>Загрузка...</div>}
+      {error && <div>Ошибка: {error}</div>}
+      {!loading && !error && products.length === 0 && <div>Товаров пока нет</div>}
+      <div className="dash-cont">
+        {products.map((item) => (
+          <Card key={item.id} product={item} />
+        ))}
       </div>
     </>
   )

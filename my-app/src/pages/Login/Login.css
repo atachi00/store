@@ -18,6 +18,8 @@
   height: 100%;
 }
 
+body { padding : 20%}
+
 .login-cont{
     display: flex;
     align-items: center;

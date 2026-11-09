@@ -8,16 +8,35 @@ import CreateProduct from './pages/CreateProduct/CreateProduct'
 import UnauthorizedPage from './pages/Unauthorized/UnauthorizedPage'
 import ForbiddenPage from './pages/Forbidden/ForbiddenPage'
 import NotFoundPage from './pages/NotFound/NotFoundPage'
+import ProtectedRoute from './shared/ProtectedRoute/ProtectedRoute'
 
 function App() {
   return (
     <Routes>
-      <Route path="/seller" element={<SellerPage />} />
+      {/* открытые */}
       <Route path="/" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/products/:id" element={<ProductPage />} />
-      <Route path="/create" element={<CreateProduct />} />
+
+      {/* для любого авторизованного */}
+      <Route
+        path="/dashboard"
+        element={<ProtectedRoute><Dashboard /></ProtectedRoute>}
+      />
+      <Route
+        path="/products/:id"
+        element={<ProtectedRoute><ProductPage /></ProtectedRoute>}
+      />
+
+      {/* только для продавца */}
+      <Route
+        path="/seller"
+        element={<ProtectedRoute role="seller"><SellerPage /></ProtectedRoute>}
+      />
+      <Route
+        path="/create"
+        element={<ProtectedRoute role="seller"><CreateProduct /></ProtectedRoute>}
+      />
+
       <Route path="/unauthorized" element={<UnauthorizedPage />} />
       <Route path="/forbidden" element={<ForbiddenPage />} />
       <Route path="*" element={<NotFoundPage />} />

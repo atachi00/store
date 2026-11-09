@@ -1,17 +1,22 @@
 import api from './_axios.js'
 
-export const  getProducts = async () => {
-    const {data} = await api.get('/products')
-    return data
+// общий каталог
+export const getProducts = async () => {
+  const { data } = await api.get('/products')
+  return data
 }
 
-export const  getProductsById = async (id) => {
-    const {data} = await api.get(`/products/${id}`)
-    return data
+// товары текущего продавца
+export const getMyProducts = async () => {
+  const { data } = await api.get('/my-products')
+  return data
 }
 
-export const deleteProducts = async (parametricUrl) => {
-    if (!parametricUrl) return 
+export const getProductsById = async (id) => {
+  const { data } = await api.get(`/products/${id}`)
+  return data
+}
 
-    return await api.delete(parametricUrl)
+export const deleteProduct = async (id) => {
+  return await api.delete(`/products/${id}`)
 }

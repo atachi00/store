@@ -8,11 +8,19 @@ function Card({product}) {
     }
     return(
         <div className="card" onClick={handleClick} style={{cursor: 'pointer'}}>
-            <div className="img"></div>
+            <div className="img">
+                {product.image_url && (
+                    <img
+                        src={product.image_url}
+                        alt={product.name}
+                        className="card-img"
+                    />
+                )}
+            </div>
             <div className="card-info">
                 <span className="title">{product.name}</span>
-                <span className="price">{product.price}$</span>
-                <span className="button">{product.description}</span>
+                <span className="price">{product.price} ₽</span>
+                <span className="button">Look</span>
             </div>
         </div>
     )

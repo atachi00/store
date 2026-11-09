@@ -1,7 +1,11 @@
 import './CreateProduct.css'
-import {useState} from 'react'
+import {useState, useRef, useEffect} from 'react'
 import api from '../../api/_axios'
 import {useNavigate} from 'react-router-dom'
+import { getErrorMessage } from '../../utils/getErrorMessage'
+
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp']
+const MAX_SIZE = 10 * 1024 * 1024 // 10 МБ
 
 function CreateProduct() {
   const [name, setName] = useState('')
@@ -11,7 +15,67 @@ function CreateProduct() {
   const [price, setPrice] = useState('')
   const [sku, setSku] = useState('')
   const [error, setError] = useState('')
+  const [submitting, setSubmitting] = useState(false)
+  const [image, setImage] = useState(null) // { file, url } или null
+  const [isDragging, setIsDragging] = useState(false)
+  const inputRef = useRef(null)
+  const imageRef = useRef(null)
   const navigate = useNavigate()
+
+  // храним актуальную картинку, чтобы очистить превью при выходе со страницы
+  useEffect(() => {
+    imageRef.current = image
+  }, [image])
+
+  useEffect(() => {
+    return () => {
+      if (imageRef.current) URL.revokeObjectURL(imageRef.current.url)
+    }
+  }, [])
+
+  const addFile = (fileList) => {
+    const file = fileList[0]
+    if (!file) return
+
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      setError(`Файл «${file.name}» не подходит: только JPEG, PNG, WEBP`)
+      return
+    }
+    if (file.size > MAX_SIZE) {
+      setError(`Файл «${file.name}» больше 10 МБ`)
+      return
+    }
+
+    if (image) URL.revokeObjectURL(image.url) // убираем старое превью
+    setError('')
+    setImage({ file, url: URL.createObjectURL(file) })
+  }
+
+  const removeImage = () => {
+    if (image) URL.revokeObjectURL(image.url)
+    setImage(null)
+  }
+
+  const handleDragOver = (e) => {
+    e.preventDefault() // без этого drop не сработает
+    setIsDragging(true)
+  }
+
+  const handleDragLeave = (e) => {
+    e.preventDefault()
+    setIsDragging(false)
+  }
+
+  const handleDrop = (e) => {
+    e.preventDefault()
+    setIsDragging(false)
+    addFile(e.dataTransfer.files)
+  }
+
+  const handleInputChange = (e) => {
+    addFile(e.target.files)
+    e.target.value = '' // чтобы можно было выбрать тот же файл снова
+  }
 
   const handleClick = async () => {
     if (!name.trim()) {
@@ -19,8 +83,8 @@ function CreateProduct() {
       return
     }
 
-    if (name.trim().length < 10) {
-      setError('Название товара должно быть не меньше 10 символов')
+    if (name.trim().length < 4) {
+      setError('Название товара должно быть не меньше 4 символов')
       return
     }
 
@@ -49,24 +113,27 @@ function CreateProduct() {
       return
     }
 
+    setError('')
+    setSubmitting(true)
+
     try {
-      await api.post('/create', {
-        name,
-        description,
-        category,
-        quantity,
-        price,
-        sku
-      }, {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-      })
+      const formData = new FormData()
+      formData.append('name', name)
+      formData.append('description', description)
+      formData.append('category', category)
+      formData.append('quantity', quantity)
+      formData.append('price', price)
+      formData.append('sku', sku)
+      if (image) formData.append('image', image.file)
+
+      // токен подставляет interceptor в api/_axios.js
+      await api.post('/create', formData)
 
       navigate('/seller')
     } catch (err) {
-      setError('Не удалось создать товар. Проверьте данные.')
-      if (err.status === 500) {
-        navigate('/forbidden')
-      }
+      setError(getErrorMessage(err, 'Не удалось создать товар. Проверьте данные.'))
+    } finally {
+      setSubmitting(false)
     }
   }
 
@@ -93,7 +160,7 @@ function CreateProduct() {
               <span className="field-label">Название товара</span>
               <span className="field-required">*</span>
             </div>
-            <input 
+            <input
               maxLength="80"
               className="input-box"
               value={name}
@@ -101,14 +168,15 @@ function CreateProduct() {
               placeholder="Название товара"
               type="text"
               required
-            /> 
+            />
           </div>
 
           <div className="form-field">
             <div className="field-label-row">
               <span className="field-label">Описание товара</span>
+              <span className="field-required">*</span>
             </div>
-            <textarea 
+            <textarea
               className="input-box field-box-textarea"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -128,7 +196,7 @@ function CreateProduct() {
                 <span className="field-label">Категория</span>
                 <span className="field-required">*</span>
               </div>
-              <select 
+              <select
                 className="input-box"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
@@ -148,7 +216,7 @@ function CreateProduct() {
                 <span className="field-label">Количество на складе</span>
                 <span className="field-required">*</span>
               </div>
-              <input 
+              <input
                 className="input-box"
                 type="number"
                 value={quantity}
@@ -164,8 +232,7 @@ function CreateProduct() {
                 <span className="field-label">Цена продажи</span>
                 <span className="field-required">*</span>
               </div>
-              <input 
-                
+              <input
                 className="input-box"
                 type="number"
                 value={price}
@@ -177,8 +244,9 @@ function CreateProduct() {
             <div className="form-field form-field-flex">
               <div className="field-label-row">
                 <span className="field-label">Артикул / SKU</span>
+                <span className="field-required">*</span>
               </div>
-              <input 
+              <input
                 className="input-box"
                 type="text"
                 value={sku}
@@ -193,14 +261,28 @@ function CreateProduct() {
           <p className="section-title">Медиафайлы</p>
           <div className="section-divider" />
 
-          <div className="upload-zone">
+          <div
+            className={`upload-zone ${isDragging ? 'dragging' : ''}`}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+            onClick={() => inputRef.current.click()}
+          >
+            <input
+              ref={inputRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              hidden
+              onChange={handleInputChange}
+            />
+
             <div className="upload-icon-wrapper">
               <img src="https://picsum.photos/id/24/24" alt="upload-cloud" className="upload-icon" />
             </div>
             <div className="upload-text-block">
-              <span className="upload-title">Загрузите изображения товара</span>
+              <span className="upload-title">Загрузите изображение товара</span>
               <p className="upload-subtitle">
-                <span className="upload-subtitle-gray">Перетащите файлы сюда или </span>
+                <span className="upload-subtitle-gray">Перетащите файл сюда или </span>
                 <span className="upload-subtitle-accent">выберите на компьютере</span>
               </p>
             </div>
@@ -208,6 +290,17 @@ function CreateProduct() {
               Поддерживаются форматы JPEG, PNG, WEBP. Максимальный размер файла — 10 МБ.
             </p>
           </div>
+
+          {image && (
+            <div className="preview-list">
+              <div className="preview-item">
+                <img src={image.url} alt={image.file.name} className="preview-img" />
+                <button type="button" className="preview-remove" onClick={removeImage}>
+                  ×
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="section-divider" />
@@ -217,7 +310,9 @@ function CreateProduct() {
             <button onClick={() => navigate('/seller')}>Отменить</button>
           </div>
           <div className="btn-submit">
-            <button onClick={() => {handleClick()}}>Сохранить товар</button>
+            <button onClick={handleClick} disabled={submitting}>
+              {submitting ? 'Сохранение...' : 'Сохранить товар'}
+            </button>
           </div>
         </div>
       </div>

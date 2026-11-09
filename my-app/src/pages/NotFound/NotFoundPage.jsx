@@ -21,7 +21,7 @@ function NotFoundPage() {
       </p>
 
       <button
-        onClick={() => navigate('/')}
+        onClick={() => navigate('/dashboard')}
         style={{
           marginTop: '20px',
           padding: '12px 20px',
@@ -33,7 +33,7 @@ function NotFoundPage() {
           cursor: 'pointer'
         }}
       >
-        LOGO
+        Back
       </button>
     </div>
   )
