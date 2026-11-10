@@ -17,12 +17,14 @@ const { JWT_SECRET, BUCKET, SUPABASE_URL } = process.env;
 if (!JWT_SECRET) {
   throw new Error("No JWT_SECRET in .env");
 }
+const isLocal = process.env.DATABASE_URL?.includes("localhost");
 
 // подключение к БД берём из .env (то же, что использует migrate.js)
 const { Pool } = pg;
+
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false },
+  ssl: isLocal ? false : { rejectUnauthorized: false },
 });
 
 const ALLOWED_TYPES = {

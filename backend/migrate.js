@@ -9,13 +9,13 @@ import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
+const isLocal = process.env.DATABASE_URL?.includes("localhost");
 const { Client } = pg;
 
 async function runMigrations() {
   const client = new Client({
     connectionString: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false },
+    ssl: isLocal ? false : { rejectUnauthorized: false },
   });
 
   try {
