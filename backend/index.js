@@ -33,7 +33,7 @@ const ALLOWED_TYPES = {
 
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 10 * 1024 * 1024 }, // 10 МБ
+  limits: { fileSize: 4 * 1024 * 1024 }, // 10 МБ
 });
 
 const s3 = new S3Client({
@@ -335,7 +335,7 @@ app.use((err, req, res, next) => {
   if (err instanceof multer.MulterError) {
     const message =
       err.code === "LIMIT_FILE_SIZE"
-        ? "Файл больше 10 МБ"
+        ? "Файл больше 4 МБ"
         : "Ошибка загрузки файла";
     return res.status(400).json({ success: false, message });
   }

@@ -5,7 +5,7 @@ import {useNavigate} from 'react-router-dom'
 import { getErrorMessage } from '../../utils/getErrorMessage'
 
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp']
-const MAX_SIZE = 10 * 1024 * 1024 // 10 МБ
+const MAX_SIZE = 4 * 1024 * 1024 
 
 function CreateProduct() {
   const [name, setName] = useState('')
@@ -42,7 +42,7 @@ function CreateProduct() {
       return
     }
     if (file.size > MAX_SIZE) {
-      setError(`Файл «${file.name}» больше 10 МБ`)
+      setError(`Файл «${file.name}» больше 4 МБ`)
       return
     }
 
@@ -287,7 +287,7 @@ function CreateProduct() {
               </p>
             </div>
             <p className="upload-hint">
-              Поддерживаются форматы JPEG, PNG, WEBP. Максимальный размер файла — 10 МБ.
+              Поддерживаются форматы JPEG, PNG, WEBP. Максимальный размер файла — 4 МБ.
             </p>
           </div>
 
