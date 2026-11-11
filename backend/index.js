@@ -256,7 +256,8 @@ app.post(
     if (!/^05[0-9a-fA-F]{64}$/.test(session_id?.trim() ?? "")) {
       return res.status(400).json({
         success: false,
-        message: "Неверный Session ID: он должен начинаться с 05 и содержать 66 символов",
+        message:
+          "Неверный Session ID: он должен начинаться с 05 и содержать 66 символов",
       });
     }
     if (req.file && !ALLOWED_TYPES[req.file.mimetype]) {
