@@ -1,0 +1,67 @@
+.auth-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: var(--sp-5) var(--page-pad);
+}
+
+.auth-form {
+  width: 100%;
+  max-width: 24rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  padding: var(--sp-6);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--coal);
+  box-shadow: var(--shadow);
+}
+
+.auth-title {
+  font-size: var(--fs-xl);
+  font-weight: 700;
+  text-align: center;
+}
+
+.auth-link {
+  font-size: var(--fs-sm);
+  text-align: center;
+}
+
+.role-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-2);
+}
+
+.role-option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  background: var(--surface-2);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color var(--ease), background var(--ease), color var(--ease);
+}
+.role-option:hover { border-color: rgb(210 159 34 / 0.5); }
+.role-option input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.role-option:has(input:checked) {
+  border-color: var(--gold);
+  background: rgb(210 159 34 / 0.12);
+  color: var(--gold);
+}
+.role-option:has(input:focus-visible) {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}

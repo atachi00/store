@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import './Dashboard.css'
 import Card from '../../shared/Card/Card'
 import Header from '../../shared/Header/Header'
 import { getProducts } from '../../api/sellerPage'
@@ -31,14 +30,21 @@ function Dashboard() {
   return (
     <>
       <Header />
-      {loading && <div>Загрузка...</div>}
-      {error && <div>Ошибка: {error}</div>}
-      {!loading && !error && products.length === 0 && <div>Товаров пока нет</div>}
-      <div className="dash-cont">
-        {products.map((item) => (
-          <Card key={item.id} product={item} />
-        ))}
-      </div>
+      <main className="page">
+        <h1 className="page-title">Каталог</h1>
+
+        {loading && <p className="state-msg">Загрузка...</p>}
+        {error && <p className="state-msg error">Ошибка: {error}</p>}
+        {!loading && !error && products.length === 0 && (
+          <p className="state-msg">Товаров пока нет</p>
+        )}
+
+        <div className="cards-grid">
+          {products.map((item) => (
+            <Card key={item.id} product={item} />
+          ))}
+        </div>
+      </main>
     </>
   )
 }

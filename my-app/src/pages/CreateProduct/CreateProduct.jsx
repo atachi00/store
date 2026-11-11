@@ -3,17 +3,19 @@ import {useState, useRef, useEffect} from 'react'
 import api from '../../api/_axios'
 import {useNavigate} from 'react-router-dom'
 import { getErrorMessage } from '../../utils/getErrorMessage'
+import Header from '../../shared/Header/Header'
 
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp']
 const MAX_SIZE = 4 * 1024 * 1024 
 
-function CreateProduct() {
+function CreateProduct() { 
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [category, setCategory] = useState('')
   const [quantity, setQuantity] = useState('')
   const [price, setPrice] = useState('')
   const [sku, setSku] = useState('')
+  const [sessionId, setSessionId] = useState('')
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [image, setImage] = useState(null) // { file, url } или null
@@ -63,6 +65,7 @@ function CreateProduct() {
 
   const handleDragLeave = (e) => {
     e.preventDefault()
+    if (e.currentTarget.contains(e.relatedTarget)) return // курсор ушёл на дочерний элемент
     setIsDragging(false)
   }
 
@@ -113,6 +116,11 @@ function CreateProduct() {
       return
     }
 
+    if (!/^05[0-9a-fA-F]{64}$/.test(sessionId.trim())) {
+      setError('Session ID должен начинаться с 05 и содержать 66 символов')
+      return
+    }
+
     setError('')
     setSubmitting(true)
 
@@ -124,6 +132,7 @@ function CreateProduct() {
       formData.append('quantity', quantity)
       formData.append('price', price)
       formData.append('sku', sku)
+      formData.append('session_id', sessionId.trim())
       if (image) formData.append('image', image.file)
 
       // токен подставляет interceptor в api/_axios.js
@@ -138,15 +147,16 @@ function CreateProduct() {
   }
 
   return (
+    <>
+    <Header />
+    <main className="page page-narrow">
     <div className="create-product-page">
-      <div className="page-header">
-        <p className="page-title">Создание товара</p>
-      </div>
+      <h1 className="page-title">Создание товара</h1>
 
       <div className="form-card">
 
         {error && (
-          <div className="validation-error">
+          <div className="form-error">
             {error}
           </div>
         )}
@@ -162,7 +172,7 @@ function CreateProduct() {
             </div>
             <input
               maxLength="80"
-              className="input-box"
+              className="input"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Название товара"
@@ -177,10 +187,10 @@ function CreateProduct() {
               <span className="field-required">*</span>
             </div>
             <textarea
-              className="input-box field-box-textarea"
+              className="input"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Подробные характеристики, преимущества и комплектация"
+              placeholder="Опишите товар"
             />
             <p className="field-hint">Подробные характеристики, преимущества и комплектация</p>
           </div>
@@ -191,13 +201,13 @@ function CreateProduct() {
           <div className="section-divider" />
 
           <div className="form-row">
-            <div className="form-field form-field-flex">
+            <div className="form-field">
               <div className="field-label-row">
                 <span className="field-label">Категория</span>
                 <span className="field-required">*</span>
               </div>
               <select
-                className="input-box"
+                className="input"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
               >
@@ -211,14 +221,15 @@ function CreateProduct() {
               </select>
             </div>
 
-            <div className="form-field form-field-flex">
+            <div className="form-field">
               <div className="field-label-row">
                 <span className="field-label">Количество на складе</span>
                 <span className="field-required">*</span>
               </div>
               <input
-                className="input-box"
+                className="input"
                 type="number"
+                min="1"
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
                 placeholder="0"
@@ -227,33 +238,52 @@ function CreateProduct() {
           </div>
 
           <div className="form-row">
-            <div className="form-field form-field-flex">
+            <div className="form-field">
               <div className="field-label-row">
                 <span className="field-label">Цена продажи</span>
                 <span className="field-required">*</span>
               </div>
               <input
-                className="input-box"
+                className="input"
                 type="number"
+                min="0"
+                step="0.01"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
                 placeholder="0.00"
               />
             </div>
 
-            <div className="form-field form-field-flex">
+            <div className="form-field">
               <div className="field-label-row">
                 <span className="field-label">Артикул / SKU</span>
                 <span className="field-required">*</span>
               </div>
               <input
-                className="input-box"
+                className="input"
                 type="text"
                 value={sku}
                 onChange={(e) => setSku(e.target.value)}
                 placeholder="Например: ART-904812"
               />
             </div>
+          </div>
+
+          <div className="form-field">
+            <div className="field-label-row">
+              <span className="field-label">Session ID</span>
+              <span className="field-required">*</span>
+            </div>
+            <input
+              className="input"
+              type="text"
+              value={sessionId}
+              onChange={(e) => setSessionId(e.target.value)}
+              placeholder="05..."
+              spellCheck="false"
+              autoComplete="off"
+            />
+            <p className="field-hint">Контакт для связи с покупателем</p>
           </div>
         </div>
 
@@ -277,7 +307,10 @@ function CreateProduct() {
             />
 
             <div className="upload-icon-wrapper">
-              <img src="https://picsum.photos/id/24/24" alt="upload-cloud" className="upload-icon" />
+              <svg className="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M7 18a4.5 4.5 0 0 1-.5-8.97A6 6 0 0 1 18 8.5a4 4 0 0 1-.5 9.5" />
+                <path d="M12 12v8m0-8-3 3m3-3 3 3" />
+              </svg>
             </div>
             <div className="upload-text-block">
               <span className="upload-title">Загрузите изображение товара</span>
@@ -306,17 +339,17 @@ function CreateProduct() {
         <div className="section-divider" />
 
         <div className="form-actions">
-          <div className="btn-cancel">
-            <button onClick={() => navigate('/seller')}>Отменить</button>
-          </div>
-          <div className="btn-submit">
-            <button onClick={handleClick} disabled={submitting}>
-              {submitting ? 'Сохранение...' : 'Сохранить товар'}
-            </button>
-          </div>
+          <button type="button" className="btn btn-outline" onClick={() => navigate('/seller')}>
+            Отменить
+          </button>
+          <button type="button" className="btn btn-primary" onClick={handleClick} disabled={submitting}>
+            {submitting ? 'Сохранение...' : 'Сохранить товар'}
+          </button>
         </div>
       </div>
     </div>
+    </main>
+    </>
   )
 }
 

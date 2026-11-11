@@ -1,0 +1,1 @@
+ALTER TABLE products ADD COLUMN IF NOT EXISTS session_id VARCHAR(66);

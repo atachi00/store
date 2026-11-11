@@ -1,33 +1,213 @@
+/* ============================================================
+   Шрифт: файл лежит в public/fonts/MedeoSansVariable.woff2
+   ============================================================ */
 @font-face {
   font-family: 'medeo';
-  src: url('../public/fonts/MedeoSansVariable.woff2') format('woff2');
-  font-weight: 400;
+  src: url('/fonts/MedeoSansVariable.woff2') format('woff2');
+  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
 
+/* ============================================================
+   Токены. Меняете здесь — меняется везде.
+   ============================================================ */
+:root {
+  /* цвета */
+  --vine: #5D0018;
+  --vine-hover: #7C0A29;
+  --carbon: #252628;
+  --coal: #19171B;
+  --white: #F3F3F3;
+  --gold: #D29F22;
+  --gold-hover: #E3B040;
 
+  --bg: var(--carbon);
+  --surface: var(--coal);
+  --surface-2: #2E2F33;
+  --text: var(--white);
+  --muted: rgb(243 243 243 / 0.6);
+  --line: rgb(243 243 243 / 0.12);
+  --danger: #FF6B6B;
 
-*,*::after, *::before {
+  /* шрифт */
+  --font: 'medeo', system-ui, 'Segoe UI', Roboto, sans-serif;
+
+  /* размеры текста */
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-md: 1rem;
+  --fs-lg: 1.125rem;
+  --fs-xl: 1.5rem;
+  --fs-2xl: 2rem;
+
+  /* отступы */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.5rem;
+  --sp-6: 2rem;
+  --sp-7: 3rem;
+
+  /* скругления */
+  --r-sm: 0.5rem;
+  --r-md: 0.75rem;
+  --r-lg: 1rem;
+
+  /* раскладка */
+  --header-h: 4rem;
+  --container: 80rem;
+  --page-pad: clamp(1rem, 4vw, 3rem);
+
+  --ease: 200ms ease;
+  --shadow: 0 0.5rem 1.5rem rgb(0 0 0 / 0.35);
+}
+
+/* на телефоне шапка в две строки */
+@media (max-width: 48rem) {
+  :root { --header-h: 6.5rem; }
+}
+
+/* ============================================================
+   Сброс и база
+   ============================================================ */
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 12px;
-  padding-top: 32px;
-  background-color: #252628;
+/* ГЛАВНЫЙ РЫЧАГ МАСШТАБА: всё в rem, поэтому меняя размер здесь, масштабируется весь сайт */
+html {
+  font-size: clamp(0.875rem, 0.8rem + 0.25vw, 1.125rem);
+  -webkit-text-size-adjust: 100%;
 }
 
-:root {
-  --vine: #5D0018;
-  --carbon: #252628;
-  --white: #F3F3F3;
-  --gold: #D29F22;
-  --coal: #19171B;
-
-
+body {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: var(--fs-md);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
+
+/* без этого кнопки и поля не наследуют шрифт и остаются системными */
+button, input, select, textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button { cursor: pointer; }
+img { display: block; max-width: 100%; }
+a { color: var(--gold); text-decoration: none; }
+a:hover { text-decoration: underline; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+/* ============================================================
+   Общие блоки
+   ============================================================ */
+.page {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: calc(var(--header-h) + var(--sp-5)) var(--page-pad) var(--sp-7);
+}
+
+.page-narrow { max-width: 60rem; }
+
+.page-title {
+  margin-bottom: var(--sp-5);
+  font-size: var(--fs-2xl);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.state-msg {
+  padding: var(--sp-5) 0;
+  text-align: center;
+  color: var(--muted);
+}
+.state-msg.error { color: #FFB4B4; }
+
+.form-error {
+  width: 100%;
+  padding: var(--sp-3) var(--sp-4);
+  border: 1px solid var(--danger);
+  border-radius: var(--r-sm);
+  background: rgb(255 107 107 / 0.12);
+  color: #FFB4B4;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+/* кнопки */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  min-height: 2.75rem;
+  padding: 0 var(--sp-5);
+  border: 1px solid transparent;
+  border-radius: var(--r-sm);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  transition: background var(--ease), color var(--ease), border-color var(--ease), transform 100ms ease;
+}
+.btn:active { transform: scale(0.98); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-block { width: 100%; }
+
+.btn-primary { background: var(--gold); color: var(--coal); }
+.btn-primary:hover:not(:disabled) { background: var(--gold-hover); }
+
+.btn-outline { border-color: var(--gold); background: transparent; color: var(--text); }
+.btn-outline:hover:not(:disabled) { background: var(--gold); color: var(--coal); }
+
+.btn-danger { background: var(--vine); color: var(--white); }
+.btn-danger:hover:not(:disabled) { background: var(--vine-hover); }
+
+/* поля ввода */
+.input {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0 var(--sp-4);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: var(--fs-md);
+  transition: border-color var(--ease), box-shadow var(--ease);
+}
+.input::placeholder { color: var(--muted); }
+.input:hover { border-color: rgb(210 159 34 / 0.5); }
+.input:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgb(210 159 34 / 0.2);
+}
+
+textarea.input {
+  min-height: 8rem;
+  padding: var(--sp-3) var(--sp-4);
+  line-height: 1.5;
+  resize: vertical;
+}
+
+select.input {
+  appearance: none;
+  padding-right: 2.25rem;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23D29F22' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.875rem center;
+}
+
+.input[type='number'] { appearance: textfield; -moz-appearance: textfield; }
+.input[type='number']::-webkit-outer-spin-button,
+.input[type='number']::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }

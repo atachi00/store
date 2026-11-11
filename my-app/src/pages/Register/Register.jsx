@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import api from '../../api/_axios'
 import { getErrorMessage } from '../../utils/getErrorMessage'
-import './Register.css'
+import '../../shared/Auth/Auth.css'
 
 function Register() {
   const [error, setError] = useState('')
@@ -26,52 +26,59 @@ function Register() {
   }
 
   return (
-    <form className="reg-cont" onSubmit={handleSubmit}>
-      <input
-        className="inp-raw"
-        type="email"
-        placeholder="Email"
-        value={text.email}
-        onChange={(e) => setText({ ...text, email: e.target.value })}
-      />
-      <input
-        className="inp-raw"
-        type="password"
-        placeholder="Password (от 6 символов)"
-        value={text.password}
-        onChange={(e) => setText({ ...text, password: e.target.value })}
-      />
-      <div>
-        <label>
-          <input
-            className="radio-role"
-            type="radio"
-            name="role"
-            value="seller"
-            checked={text.role === 'seller'}
-            onChange={(e) => setText({ ...text, role: e.target.value })}
-          />
-          Seller
-        </label>
-        <label>
-          <input
-            className="radio-role"
-            type="radio"
-            name="role"
-            value="buyer"
-            checked={text.role === 'buyer'}
-            onChange={(e) => setText({ ...text, role: e.target.value })}
-          />
-          Buyer
-        </label>
-      </div>
-      <button className="btn-reg" type="submit" disabled={loading}>
-        {loading ? '...' : 'Register'}
-      </button>
+    <main className="auth-page">
+      <form className="auth-form" onSubmit={handleSubmit}>
+        <h1 className="auth-title">Регистрация</h1>
 
-      <Link to="/">Already have an account? Log in</Link>
-      {error && <h1 className="error-msg">{error}</h1>}
-    </form>
+        <input
+          className="input"
+          type="email"
+          placeholder="Email"
+          autoComplete="email"
+          value={text.email}
+          onChange={(e) => setText({ ...text, email: e.target.value })}
+        />
+        <input
+          className="input"
+          type="password"
+          placeholder="Пароль (от 6 символов)"
+          autoComplete="new-password"
+          value={text.password}
+          onChange={(e) => setText({ ...text, password: e.target.value })}
+        />
+
+        <div className="role-group">
+          <label className="role-option">
+            <input
+              type="radio"
+              name="role"
+              value="seller"
+              checked={text.role === 'seller'}
+              onChange={(e) => setText({ ...text, role: e.target.value })}
+            />
+            Продавец
+          </label>
+          <label className="role-option">
+            <input
+              type="radio"
+              name="role"
+              value="buyer"
+              checked={text.role === 'buyer'}
+              onChange={(e) => setText({ ...text, role: e.target.value })}
+            />
+            Покупатель
+          </label>
+        </div>
+
+        {error && <p className="form-error" role="alert">{error}</p>}
+
+        <button className="btn btn-primary btn-block" type="submit" disabled={loading}>
+          {loading ? '...' : 'Зарегистрироваться'}
+        </button>
+
+        <Link className="auth-link" to="/">Уже есть аккаунт? Войти</Link>
+      </form>
+    </main>
   )
 }
 

@@ -1,29 +1,30 @@
 import './Card.css'
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
-function Card({product}) {
-    const navigate = useNavigate()
-    const handleClick = () => {
-        navigate(`/products/${product.id}`)
-    }
-    return(
-        <div className="card" onClick={handleClick} style={{cursor: 'pointer'}}>
-            <div className="img">
-                {product.image_url && (
-                    <img
-                        src={product.image_url}
-                        alt={product.name}
-                        className="card-img"
-                    />
-                )}
-            </div>
-            <div className="card-info">
-                <span className="title">{product.name}</span>
-                <span className="price">{product.price} ₽</span>
-                <span className="button">Look</span>
-            </div>
-        </div>
-    )
+function Card({ product }) {
+  const navigate = useNavigate()
+  const open = () => navigate(`/products/${product.id}`)
+
+  return (
+    <div
+      className="card"
+      role="link"
+      tabIndex={0}
+      onClick={open}
+      onKeyDown={(e) => e.key === 'Enter' && open()}
+    >
+      <div className="card-media">
+        {product.image_url && (
+          <img src={product.image_url} alt={product.name} className="card-img" />
+        )}
+      </div>
+      <div className="card-body">
+        <span className="card-title">{product.name}</span>
+        <span className="card-price">{product.price} ₽</span>
+        <span className="card-cta">Смотреть</span>
+      </div>
+    </div>
+  )
 }
 
 export default Card

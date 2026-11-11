@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import Card from '../../shared/Card/Card'
-import './SellerPage.css'
 import Header from '../../shared/Header/Header'
 import { getMyProducts, deleteProduct } from '../../api/sellerPage'
 import { getErrorMessage } from '../../utils/getErrorMessage'
@@ -42,21 +41,26 @@ function SellerPage() {
   return (
     <>
       <Header />
-      {loading && <div>Загрузка...</div>}
-      {error && <div>Ошибка: {error}</div>}
-      {!loading && !error && products.length === 0 && (
-        <div>У вас пока нет товаров</div>
-      )}
-      <div className="cards">
-        {products.map((item) => (
-          <div className="card-item" key={item.id}>
-            <Card product={item} />
-            <button className="card-del-btn" onClick={() => handleDelete(item.id)}>
-              Delete
-            </button>
-          </div>
-        ))}
-      </div>
+      <main className="page">
+        <h1 className="page-title">Мои товары</h1>
+
+        {loading && <p className="state-msg">Загрузка...</p>}
+        {error && <p className="state-msg error">Ошибка: {error}</p>}
+        {!loading && !error && products.length === 0 && (
+          <p className="state-msg">У вас пока нет товаров</p>
+        )}
+
+        <div className="cards-grid">
+          {products.map((item) => (
+            <div className="card-item" key={item.id}>
+              <Card product={item} />
+              <button className="btn btn-danger btn-block" onClick={() => handleDelete(item.id)}>
+                Удалить
+              </button>
+            </div>
+          ))}
+        </div>
+      </main>
     </>
   )
 }

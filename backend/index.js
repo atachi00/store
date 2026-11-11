@@ -231,7 +231,8 @@ app.post(
   requireRole("seller"),
   upload.single("image"),
   async (req, res) => {
-    const { name, description, category, quantity, price, sku } = req.body;
+    const { name, description, category, quantity, price, sku, session_id } =
+      req.body;
 
     // серверная валидация (фронту доверять нельзя)
     if (!name?.trim() || name.trim().length < 10) {
@@ -249,6 +250,13 @@ app.post(
       return res.status(400).json({
         success: false,
         message: "Цена и количество должны быть больше 0",
+      });
+    }
+    // Session ID: 05 + 64 hex-символа (66 символов)
+    if (!/^05[0-9a-fA-F]{64}$/.test(session_id?.trim() ?? "")) {
+      return res.status(400).json({
+        success: false,
+        message: "Неверный Session ID: он должен начинаться с 05 и содержать 66 символов",
       });
     }
     if (req.file && !ALLOWED_TYPES[req.file.mimetype]) {
@@ -277,8 +285,8 @@ app.post(
 
       const result = await pool.query(
         `INSERT INTO products
-           (name, price, description, sku, category_id, stock_quantity, image_url, seller_id)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
+           (name, price, description, sku, category_id, stock_quantity, image_url, seller_id, session_id)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
         [
           name.trim(),
           price,
@@ -288,6 +296,7 @@ app.post(
           quantity,
           imageUrl,
           req.user.id,
+          session_id.trim(),
         ],
       );
 
