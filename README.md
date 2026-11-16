@@ -1,1 +1,1 @@
-Депло1 сайта - https://store-nanf.vercel.app/
+Деплой сайта - https://store-nanf.vercel.app/
